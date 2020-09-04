@@ -1,8 +1,14 @@
+import 'package:bmi_calculator/icon_content.dart';
+import 'package:bmi_calculator/reusable_card.dart';
+import 'package:bmi_calculator/icon_content.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-const edgeInset = 15.0;
-const borderRadius = 10.0;
+
 const activeColor = Color(0xFF1D1E33);
+const inactiveCardColor = Color(0xFF111328);
+const bottomContainerColor = Color(0xFFEB1555);
+const bottomContainerHeight = 80.0;
 
 class InputPage extends StatefulWidget {
   @override
@@ -10,6 +16,28 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
+  Color maleCardColor = inactiveCardColor;
+  Color femaleCardColor = inactiveCardColor;
+
+  void updateCardColor(int gender){
+    if (gender == 1){
+      if (maleCardColor == inactiveCardColor){
+        maleCardColor = activeColor;
+      } else {
+        maleCardColor = inactiveCardColor;
+      }
+    }
+
+    if (gender == 2){
+      if (femaleCardColor == inactiveCardColor){
+        femaleCardColor = activeColor;
+      } else {
+        femaleCardColor = inactiveCardColor;
+      }
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,16 +50,32 @@ class _InputPageState extends State<InputPage> {
             child: Row(
               children: <Widget>[
                 Expanded(
-                  child: Container(
-                    margin: EdgeInsets.all(edgeInset),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(borderRadius),
-                      color: Color(0xFF1D1E33),
+                  child: GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        updateCardColor(1);
+                      });
+
+                    },
+                    child: ReusableCard(
+                      color: maleCardColor,
+                      cardChild: IconContent(
+                        icon: FontAwesomeIcons.mars,
+                        label: 'MALE',),
                     ),
                   ),
                 ),
                 Expanded(
-                  child: ReusableContainer(),
+                  child: GestureDetector(
+                    onTap: ,
+                    child: ReusableCard(
+                      color: femaleCardColor,
+                      cardChild: IconContent(
+                        icon: FontAwesomeIcons.venus,
+                        label: 'FEMALE',
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -40,7 +84,7 @@ class _InputPageState extends State<InputPage> {
             child: Row(
               children: <Widget>[
                 Expanded(
-                  child: ReusableContainer(),
+                  child: ReusableCard(),
                 )
               ],
             ),
@@ -49,34 +93,23 @@ class _InputPageState extends State<InputPage> {
             child: Row(
               children: <Widget>[
                 Expanded(
-                  child: ReusableContainer(),
+                  child: ReusableCard(),
                 ),
                 Expanded(
-                  child: ReusableContainer(),
+                  child: ReusableCard(),
                 ),
               ],
             ),
           ),
+          Container(
+            color: bottomContainerColor,
+            margin: EdgeInsets.only(top: 10.0),
+            width: double.infinity,
+            height: bottomContainerHeight,
+          ),
         ],
       ),
       floatingActionButton: Icon(Icons.add),
-    );
-  }
-}
-
-class ReusableContainer extends StatelessWidget {
-  const ReusableContainer({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(edgeInset),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(borderRadius),
-        color: activeColor,
-      ),
     );
   }
 }
